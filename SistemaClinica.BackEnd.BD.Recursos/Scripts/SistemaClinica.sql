@@ -63,7 +63,7 @@ CREATE OR ALTER PROCEDURE SP_ErroresBD_Insertar
 
 		RETURN @@IDENTITY
 	END
-
+GO
 CREATE TABLE Clinica(
 	IdClinica int not null,
 	Nombre varchar(MAX)not null,
@@ -92,9 +92,8 @@ EXEC sp_addextendedproperty
    	@level0type = N'Schema',	@level0name = 'dbo',
   	@level1type = N'Table',		@level1name = 'Clinica'
 GO
-
 EXEC sp_addextendedproperty 
-	@name = N'MS_Description',	@value = 'IdClinica',
+	@name = N'MS_Description',	@value = 'Id de la Clinica',
    	@level0type = N'Schema',	@level0name = 'dbo',
    	@level1type = N'Table',		@level1name = 'Clinica', 
    	@level2type = N'Column',	@level2name = 'IdClinica'
@@ -159,7 +158,7 @@ EXEC sp_addextendedproperty
    	@level1type = N'Table',		@level1name = 'Clinica', 
    	@level2type = N'Column',	@level2name = 'ModificadoPor'
 
-CREATE PROCEDURE SP_Clinica_Actualizar
+CREATE OR ALTER PROCEDURE SP_Clinica_Actualizar
 	@IdClinica VARCHAR(10),
 	@Horario VARCHAR(30),
 	@ModificadoPor VARCHAR(60),
@@ -170,7 +169,7 @@ CREATE PROCEDURE SP_Clinica_Actualizar
 		BEGIN TRANSACTION
 			DECLARE @ExisteClinica BIT
 		
-			SET @ExisteClinica = dbo.FN_Clinica_SeleccionarPorId(@ExisteClinica)
+			SET @ExisteClinica = dbo.FN_Clinica_VerificaExistenciaPorId(@IdClinica)
 		
 			IF(@ExisteClinica = 1)
 				BEGIN
@@ -202,7 +201,7 @@ CREATE PROCEDURE SP_Clinica_Actualizar
 		SET @DetalleError = 'Error actualizado el Clinica: '+	@IdClinica	+ '. Número de Error: ' + @NumeroDeError		
 
 	END CATCH
-
+GO
 
 CREATE OR ALTER PROCEDURE SP_Clinica_Desactivar
 	@IdClinica VARCHAR(10),
@@ -214,7 +213,7 @@ CREATE OR ALTER PROCEDURE SP_Clinica_Desactivar
 		BEGIN TRANSACTION
 			DECLARE @ExisteClinica BIT
 
-			SET @ExisteClinica = dbo.FN_Clinica_SeleccionarPorId(@ExisteClinica)
+			SET @ExisteClinica = dbo.FN_Clinica_VerificaExistenciaPorId(@IdClinica)
 
 			IF(@ExisteClinica = 1)
 				BEGIN
@@ -245,8 +244,7 @@ CREATE OR ALTER PROCEDURE SP_Clinica_Desactivar
 		SET @DetalleError = 'Error al eliminar Clinica '+	@IdClinica	+ '. Número de Error: ' + @NumeroDeError
 
 	END CATCH
-
-
+GO
 
 CREATE OR ALTER PROCEDURE SP_Clinica_Insertar
 	@IdClinica VARCHAR(10),
@@ -276,8 +274,8 @@ CREATE OR ALTER PROCEDURE SP_Clinica_Insertar
 		SET @DetalleError = 'Error insertando clinica. Número de Error: ' + @NumeroDeError
 		
 	END CATCH
-
-CREATE FUNCTION FN_Clinica_SeleccionarPorId(
+GO
+CREATE OR ALTER FUNCTION FN_Clinica_SeleccionarPorId(
 	@IdClinica VARCHAR(10)
 )
 
@@ -289,17 +287,16 @@ RETURNS TABLE AS
 		WHERE 
 			Clinica.IdClinica = @IdClinica
 
+GO
 
-
-CREATE FUNCTION FN_Clinica_SeleccionarTodos()
+CREATE OR ALTER FUNCTION FN_Clinica_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_Clinica_SeleccionarTodos
+GO
 
-
-CREATE FUNCTION FN_Clinica_VerificaExistenciaPorId ( 
-	@IdClinica VARCHAR(10))
+CREATE OR ALTER FUNCTION FN_Clinica_VerificaExistenciaPorId (@IdClinica VARCHAR(10))
 RETURNS BIT AS
 BEGIN
 	DECLARE @ExisteClinica BIT;
@@ -308,13 +305,14 @@ BEGIN
 	 
     RETURN @ExisteClinica
 END;
+GO
 
 
-
-CREATE VIEW VW_Clinica_SeleccionarTodos
+CREATE OR ALTER VIEW VW_Clinica_SeleccionarTodos
 AS 
-	SELECT @IdClinica,FROM Clinica WHERE Activo = 1
+	SELECT IdClinica FROM Clinica WHERE Activo = 1
 
+GO
 
 CREATE TABLE Paciente(
 	Idpaciente nvarchar(50) not null,
@@ -338,6 +336,7 @@ VALUES
 ('2-0841-0362'	,'Lucia',	'Venegas',	'1986-04-12 12:45:22',	'86235661'	,'mora123@gmail.com'),
 ('5-0654-0953'	,'Pedro',	'Lopez',	'1995-03-25 11:30:33',	'72356721'	,'pl4319@gmail.com'),
 ('4-0204-0921',	'Luis'	,'Villegas'	,'2001-12-22 9:30:41',	'64246901'	,'villel234@gmail.com')
+GO
 
 EXEC sp_addextendedproperty
 	@name = N'MS_Description',	@value = 'Paciente que se gestionan  ',
@@ -429,7 +428,7 @@ CREATE OR ALTER PROCEDURE SP_Paciente_Actualizar
 		BEGIN TRANSACTION
 			DECLARE @ExistePaciente BIT
 		
-			SET @ExistePaciente = dbo.FN_Paciente_SeleccionarPorId(@ExistePaciente)
+			SET @ExistePaciente = dbo.FN_Paciente_VerificaExistenciaPorId(@Idpaciente)
 		
 			IF(@ExistePaciente = 1)
 				BEGIN
@@ -461,8 +460,9 @@ CREATE OR ALTER PROCEDURE SP_Paciente_Actualizar
 
 	END CATCH
 
+GO
 
-CREATE PROCEDURE SP_Paciente_Desactivar
+CREATE OR ALTER PROCEDURE SP_Paciente_Desactivar
 	@Idpaciente VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -472,7 +472,7 @@ CREATE PROCEDURE SP_Paciente_Desactivar
 		BEGIN TRANSACTION
 			DECLARE @ExistePaciente BIT
 
-			SET @ExistePaciente = dbo.FN_Paciente_SeleccionarPorId(@ExistePaciente)
+			SET @ExistePaciente = dbo.FN_Paciente_VerificaExistenciaPorId(@Idpaciente)
 
 			IF(@ExistePaciente = 1)
 				BEGIN
@@ -504,9 +504,9 @@ CREATE PROCEDURE SP_Paciente_Desactivar
 
 	END CATCH
 
+GO
 
-
-CREATE PROCEDURE SP_Paciente_Insertar
+CREATE OR ALTER PROCEDURE SP_Paciente_Insertar
 	@Idpaciente VARCHAR(10),
 	@Horario VARCHAR(30),
 	@CreadoPor VARCHAR(60),
@@ -534,11 +534,9 @@ CREATE PROCEDURE SP_Paciente_Insertar
 		SET @DetalleError = 'Error insertando Paciente. Número de Error: ' + @NumeroDeError
 		
 	END CATCH
+GO
 
-
-CREATE FUNCTION FN_Paciente_SeleccionarPorId(
-	@Idpaciente VARCHAR(10)
-)
+CREATE OR ALTER FUNCTION FN_Paciente_SeleccionarPorId(@Idpaciente VARCHAR(10))
 
 
 RETURNS TABLE AS
@@ -548,16 +546,16 @@ RETURNS TABLE AS
 		WHERE 
 			Pacientes.Idpaciente= @Idpaciente
 
+GO
 
-
-CREATE FUNCTION FN_Paciente_SeleccionarTodos()
+CREATE OR ALTER FUNCTION FN_Paciente_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_Paciente_SeleccionarTodos
+GO
 
-
-CREATE FUNCTION FN_Paciente_VerificaExistenciaPorId ( 
+CREATE OR ALTER FUNCTION FN_Paciente_VerificaExistenciaPorId ( 
 	@Idpaciente VARCHAR(10))
 RETURNS BIT AS
 BEGIN
@@ -567,12 +565,12 @@ BEGIN
 	 
     RETURN @ExistePaciente
 END;
+GO
 
-
-CREATE VIEW VW_Paciente_SeleccionarTodos
+CREATE OR ALTER VIEW VW_Paciente_SeleccionarTodos
 AS 
 	SELECT Idpaciente, Horario FROM Paciente WHERE Activo = 1
-
+GO
 
 CREATE TABLE Consultorio(
 	 IdConsultorio int not null,
@@ -600,7 +598,7 @@ VALUES
 ('55'	,'145',	'nar',	'segundo piso'	,'26503956'	,'consultorio5@gmail.com')
 
 EXEC sp_addextendedproperty
-	@name = N'MS_Description',	@value = 'consultorio  que se gestionan  ',
+	@name = N'MS_Description',	@value = 'consultorio  del sistema ',
    	@level0type = N'Schema',	@level0name = 'dbo',
   	@level1type = N'Table',		@level1name = 'Consultorio'
 GO
@@ -686,7 +684,7 @@ CREATE OR ALTER PROCEDURE SP_Consultorio_Actualizar
 		BEGIN TRANSACTION
 			DECLARE @ExisteConsultorio BIT
 		
-			SET @ExisteConsultorio = dbo.FN_Consultorio_SeleccionarPorId(@ExisteConsultorio)
+			SET @ExisteConsultorio = dbo.FN_Consultorio_VerificaExistenciaPorId(@ExisteConsultorio)
 		
 			IF(@ExisteConsultorio = 1)
 				BEGIN
@@ -718,8 +716,8 @@ CREATE OR ALTER PROCEDURE SP_Consultorio_Actualizar
 
 	END CATCH
 
-
-CREATE PROCEDURE SP_Consultorio_Desactivar
+GO
+CREATE OR ALTER PROCEDURE SP_Consultorio_Desactivar
 	@IdConsultorio VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -729,7 +727,7 @@ CREATE PROCEDURE SP_Consultorio_Desactivar
 		BEGIN TRANSACTION
 			DECLARE @ExisteConsultorio BIT
 
-			SET @ExisteConsultorio = dbo.FN_Consultorio_SeleccionarPorId(@ExisteConsultorio)
+			SET @ExisteConsultorio = dbo.FN_Consultorio_VerificaExistenciaPorId(@ExisteConsultorio)
 
 			IF(@ExisteConsultorio = 1)
 				BEGIN
@@ -760,7 +758,7 @@ CREATE PROCEDURE SP_Consultorio_Desactivar
 		SET @DetalleError = 'Error al eliminar Consultorio '+	@IdConsultorio	+ '. Número de Error: ' + @NumeroDeError
 
 	END CATCH
-
+	GO
 
 
 
@@ -792,28 +790,26 @@ CREATE OR ALTER PROCEDURE SP_Consultorio_Insertar
 		SET @DetalleError = 'Error insertando consultorio. Número de Error: ' + @NumeroDeError
 		
 	END CATCH
-
-CREATE FUNCTION FN_Colsultorio_SeleccionarPorId(
-	@IdConsultorio VARCHAR(10)
-)
+	GO
+CREATE OR ALTER FUNCTION FN_Colsultorio_SeleccionarPorId(@IdConsultorio VARCHAR(10))
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_Consultorio_SeleccionarTodos AS Consultorio
 		WHERE 
-			Colsultorios.IdConsultorio = @IdConsultorio
+			Consultorio.IdConsultorio = @IdConsultorio
+GO
 
 
 
-
-CREATE FUNCTION FN_Consultorio_SeleccionarTodos()
+CREATE OR ALTER FUNCTION FN_Consultorio_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_Consultorio_SeleccionarTodos
+GO
 
-
-CREATE FUNCTION FN_Consultorio_VerificaExistenciaPorId ( 
+CREATE OR ALTER FUNCTION FN_Consultorio_VerificaExistenciaPorId ( 
 	@IdConsultorio VARCHAR(10))
 RETURNS BIT AS
 BEGIN
@@ -823,13 +819,13 @@ BEGIN
 	 
     RETURN @ExisteConsultorio
 END;
+GO
 
 
-
-CREATE VIEW VW_Consultorio_SeleccionarTodos
+CREATE OR ALTER VIEW VW_Consultorio_SeleccionarTodos
 AS 
-	SELECT IdConsultorio FROM Consultorio WHERE Activo = 1
-
+	SELECT * FROM Consultorio WHERE Activo = 1
+GO
 CREATE TABLE Doctores(
     IdDoctor varchar,
     Nombre varchar (20)not null,
@@ -900,7 +896,7 @@ CREATE OR ALTER PROCEDURE SP_Doctor_Actualizar
 		BEGIN TRANSACTION
 			DECLARE @ExisteDoctor BIT
 		
-			SET @ExisteDoctor = dbo.FN_Doctor_SeleccionarPorId(@ExisteDoctor)
+			SET @ExisteDoctor = dbo.FN_Doctor_VerificaExistenciaPorId(@ExisteDoctor)
 		
 			IF(@ExisteDoctor = 1)
 				BEGIN
@@ -931,8 +927,8 @@ CREATE OR ALTER PROCEDURE SP_Doctor_Actualizar
 		SET @DetalleError = 'Error actualizado el Doctor: '+	@IdDoctor	+ '. Número de Error: ' + @NumeroDeError		
 
 	END CATCH
-
-CREATE PROCEDURE SP_Doctor_Desactivar
+	GO
+CREATE OR ALTER PROCEDURE SP_Doctor_Desactivar
 	@IdDoctor VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -942,7 +938,7 @@ CREATE PROCEDURE SP_Doctor_Desactivar
 		BEGIN TRANSACTION
 			DECLARE @ExisteDoctor BIT
 
-			SET @ExisteDoctor = dbo.FN_Doctor_SeleccionarPorId(@ExisteDoctor)
+			SET @ExisteDoctor = dbo.FN_Doctor_VerificaExistenciaPorId(@ExisteDoctor)
 
 			IF(@ExisteDoctor = 1)
 				BEGIN
@@ -973,7 +969,7 @@ CREATE PROCEDURE SP_Doctor_Desactivar
 		SET @DetalleError = 'Error al eliminar el Doctor: '+	@IdDoctor	+ '. Número de Error: ' + @NumeroDeError
 
 	END CATCH
-
+	GO
 	CREATE OR ALTER PROCEDURE SP_Doctor_Insertar
 	@IdDoctor VARCHAR(10),
 	@CreadoPor VARCHAR(60),
@@ -1001,24 +997,24 @@ CREATE PROCEDURE SP_Doctor_Desactivar
 		SET @DetalleError = 'Error insertando un Doctor. Número de Error: ' + @NumeroDeError
 		
 	END CATCH
-
-CREATE FUNCTION dbo.FN_Doctor_SeleccionarPorId(
-	@IdDoctor VARCHAR(10)
+	GO
+CREATE OR ALTER FUNCTION dbo.FN_Doctor_SeleccionarPorId(
+@IdDoctor VARCHAR(10)
 )
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_Doctor_SeleccionarTodos AS Doctores
 		WHERE 
-			Doctores.IdDoctor = @IdDoctor
-
-CREATE FUNCTION dbo.FN_Doctor_SeleccionarTodos()
+			Doctores.Id_doctor = @IdDoctor
+GO
+CREATE OR ALTER FUNCTION dbo.FN_Doctor_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_Doctor_SeleccionarTodos
-
-CREATE FUNCTION dbo.FN_Doctor_VerificaExistenciaPorId ( 
+GO
+CREATE OR ALTER FUNCTION dbo.FN_Doctor_VerificaExistenciaPorId ( 
 	@IdDoctor VARCHAR(10))
 RETURNS BIT AS
 BEGIN
@@ -1027,11 +1023,12 @@ BEGIN
 	SET @ExisteDoctor = (SELECT count(IdDoctor) FROM Doctores WHERE IdDoctor = @IdDoctor)
 	 
     RETURN @ExisteDoctor
-END;
-CREATE VIEW VW_Doctor_SeleccionarTodos
+END
+GO
+CREATE OR ALTER VIEW VW_Doctor_SeleccionarTodos
 AS 
 	SELECT IdDoctor FROM Doctores WHERE Activo = 1
-
+GO
 CREATE TABLE Enfermedades(
     IdEnfermedad varchar,
     Nombre varchar (20)not null,
@@ -1095,7 +1092,7 @@ CREATE OR ALTER PROCEDURE SP_Enfermedad_Actualizar
 		BEGIN TRANSACTION
 			DECLARE @ExisteEnfermedad BIT
 		
-			SET @ExisteEnfermedad = dbo.FN_Enfermedades_SeleccionarPorId(@ExisteEnfermedad)
+			SET @ExisteEnfermedad =dbo.FN_Enfermedad_VerificaExistenciaPorId(@ExisteEnfermedad)
 		
 			IF(@ExisteEnfermedad = 1)
 				BEGIN
@@ -1126,8 +1123,8 @@ CREATE OR ALTER PROCEDURE SP_Enfermedad_Actualizar
 		SET @DetalleError = 'Error actualizado el Enfermedad: '+	@IdEnfermedad	+ '. Número de Error: ' + @NumeroDeError		
 
 	END CATCH
-
-CREATE PROCEDURE SP_Enfermedad_Desactivar
+GO
+CREATE OR ALTER PROCEDURE SP_Enfermedad_Desactivar
 	@IdEnfermedad VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -1137,7 +1134,7 @@ CREATE PROCEDURE SP_Enfermedad_Desactivar
 		BEGIN TRANSACTION
 			DECLARE @ExisteEnfermedad BIT
 
-			SET @ExisteEnfermedad = dbo.FN_Enfermedad_SeleccionarPorId(@ExisteEnfermedad)
+			SET @ExisteEnfermedad = dbo.FN_Enfermedad_VerificaExistenciaPorId(@ExisteEnfermedad)
 
 			IF(@ExisteEnfermedad = 1)
 				BEGIN
@@ -1168,7 +1165,7 @@ CREATE PROCEDURE SP_Enfermedad_Desactivar
 		SET @DetalleError = 'Error al eliminar el Enfermedad: '+	@IdEnfermedad	+ '. Número de Error: ' + @NumeroDeError
 
 	END CATCH
-
+	GO
 	CREATE OR ALTER PROCEDURE SP_Enfermedad_Insertar
 	@IdEnfermedad VARCHAR(10),
 	@CreadoPor VARCHAR(60),
@@ -1196,8 +1193,8 @@ CREATE PROCEDURE SP_Enfermedad_Desactivar
 		SET @DetalleError = 'Error insertando una Enfermedad. Número de Error: ' + @NumeroDeError
 		
 	END CATCH
-
-CREATE FUNCTION dbo.FN_Enfermedad_SeleccionarPorId(
+	GO
+CREATE OR ALTER FUNCTION dbo.FN_Enfermedad_SeleccionarPorId(
 	@IdEnfermedad VARCHAR(10)
 )
 RETURNS TABLE AS
@@ -1205,29 +1202,29 @@ RETURNS TABLE AS
 		SELECT * 
 		FROM VW_Enfermedad_SeleccionarTodos AS Enfermedades
 		WHERE 
-			Enfermedades.IdEnfermedad = @IdEnfermedad
-
-CREATE FUNCTION dbo.FN_Enfermedad_SeleccionarTodos()
+			Enfermedades.Id_Enfermedad = @IdEnfermedad
+GO
+CREATE OR ALTER FUNCTION dbo.FN_Enfermedad_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_Enfermedad_SeleccionarTodos
-
-CREATE FUNCTION dbo.FN_Enfermedad_VerificaExistenciaPorId ( 
+GO
+CREATE OR ALTER FUNCTION dbo.FN_Enfermedad_VerificaExistenciaPorId ( 
 	@IdEnfermedad VARCHAR(10))
 RETURNS BIT AS
 BEGIN
 	DECLARE @ExisteEnfermedad BIT;
 	
-	SET @ExisteEnfermedad = (SELECT count(IdEnfermedad) FROM Enfermedades WHERE IdEnfermedad = @IdEnfermedad)
+	SET @ExisteEnfermedad = (SELECT count(Id_Enfermedad) FROM Enfermedades WHERE Id_Enfermedad = @IdEnfermedad)
 	 
     RETURN @ExisteEnfermedad
 END;
-
-CREATE VIEW VW_Enfermedad_SeleccionarTodos
+GO
+CREATE OR ALTER VIEW VW_Enfermedad_SeleccionarTodos
 AS 
-	SELECT IdEnfermedad FROM Enfermedades WHERE Activo = 1
-
+	SELECT Id_Enfermedad FROM Enfermedades WHERE Activo = 1
+GO
 CREATE TABLE Medicamentos(
     IdMedicamento int,
     Nombre varchar(20)not null,
@@ -1318,7 +1315,7 @@ CREATE OR ALTER PROCEDURE SP_Medicamento_Actualizar
 		BEGIN TRANSACTION
 			DECLARE @ExisteMedicamento BIT
 		
-			SET @ExisteMedicamento = dbo.FN_Medicamento_SeleccionarPorId(@ExisteMedicamento)
+			SET @ExisteMedicamento = dbo.FN_Medicamento_VerificaExistenciaPorId(@ExisteMedicamento)
 		
 			IF(@ExisteMedicamento = 1)
 				BEGIN
@@ -1349,8 +1346,8 @@ CREATE OR ALTER PROCEDURE SP_Medicamento_Actualizar
 		SET @DetalleError = 'Error actualizado el Medicamento: '+	@IdMedicamento	+ '. Número de Error: ' + @NumeroDeError		
 
 	END CATCH
-
-CREATE PROCEDURE SP_Medicamentos_Desactivar
+GO
+CREATE OR ALTER PROCEDURE SP_Medicamentos_Desactivar
 	@IdMedicamento VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -1360,7 +1357,7 @@ CREATE PROCEDURE SP_Medicamentos_Desactivar
 		BEGIN TRANSACTION
 			DECLARE @ExisteMedicamento BIT
 
-			SET @ExisteMedicamento = dbo.FN_Medicamento_SeleccionarPorId(@ExisteMedicamento)
+			SET @ExisteMedicamento = dbo.FN_Medicamento_VerificaExistenciaPorId(@ExisteMedicamento)
 
 			IF(@ExisteMedicamento = 1)
 				BEGIN
@@ -1391,7 +1388,7 @@ CREATE PROCEDURE SP_Medicamentos_Desactivar
 		SET @DetalleError = 'Error al eliminar el Medicamento: '+	@IdMedicamento	+ '. Número de Error: ' + @NumeroDeError
 
 	END CATCH
-
+	GO
 CREATE OR ALTER PROCEDURE SP_Medicamento_Insertar
 	@IdMedicamento VARCHAR(10),
 	@CreadoPor VARCHAR(60),
@@ -1401,7 +1398,7 @@ CREATE OR ALTER PROCEDURE SP_Medicamento_Insertar
 	BEGIN TRY		
 		BEGIN TRANSACTION
 			
-			INSERT INTO Medicamentos(@IdMedicamento,  @CreadoPor)
+			INSERT INTO Medicamentos(IdMedicamento,  CreadoPor)
 			VALUES(@IdMedicamento,  @CreadoPor)		
 
 			SET @ExisteError = 0
@@ -1419,9 +1416,9 @@ CREATE OR ALTER PROCEDURE SP_Medicamento_Insertar
 		SET @DetalleError = 'Error insertando un Medicamento. Número de Error: ' + @NumeroDeError
 		
 	END CATCH
+	GO
 
-
-CREATE FUNCTION dbo.FN_Medicamento_SeleccionarPorId(
+CREATE OR ALTER FUNCTION dbo.FN_Medicamento_SeleccionarPorId(
 	@IdMedicamento VARCHAR(10)
 )
 RETURNS TABLE AS
@@ -1429,15 +1426,15 @@ RETURNS TABLE AS
 		SELECT * 
 		FROM VW_Medicamento_SeleccionarTodos AS Medicamentos
 		WHERE 
-			Medicamentos.IdMedicamento = @IdMedicamento
-
-CREATE FUNCTION dbo.FN_Medicamento_SeleccionarTodos()
+			Medicamentos.Id_Medicamento = @IdMedicamento
+GO
+CREATE OR ALTER FUNCTION dbo.FN_Medicamento_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_Medicamento_SeleccionarTodos
-
-CREATE FUNCTION dbo.FN_Medicamento_VerificaExistenciaPorId ( 
+GO
+CREATE OR ALTER FUNCTION dbo.FN_Medicamento_VerificaExistenciaPorId ( 
 	@IdMedicamento VARCHAR(10))
 RETURNS BIT AS
 BEGIN
@@ -1446,12 +1443,12 @@ BEGIN
 	SET @ExisteMedicamento = (SELECT count(IdMedicamento) FROM Medicamentos WHERE IdMedicamento = @IdMedicamento)
 	 
     RETURN @ExisteMedicamento
-END;
-
-CREATE VIEW VW_Medicamento_SeleccionarTodos
+END
+GO
+CREATE OR ALTER VIEW VW_Medicamento_SeleccionarTodos
 AS 
 	SELECT IdMedicamento FROM Medicamentos WHERE Activo = 1
-
+GO
 
 Create table Cita(
     IdCita int,
@@ -1478,8 +1475,7 @@ VALUES
 ('54',	'2022-07-24 22:55:44',	'5-0145-0451',	'1-0355-0455'	,	'20000',	'2500'	,'22500'	,'20'),
 ('21',	'2022-05-21 20:55:44',	'2-0841-0362',	'2-0378-0123'		,'20000',	'3500',	'23500',	'21'),
 ('36'	,'2022-06-29 21:55:44',	'5-0654-0953',	'7-008-0432',		'20000'	,'4000',	'24000',	'22'),
-('24',	'2022-08-19 23:55:44'	,'4-0204-0921'	,'5-0987-0456',		'20000'	,'5000'	,'25000',	'23')
-
+('24',	'2022-08-19 23:55:44'	,'4-0204-0921'	,'5-0987-0456',		'20000'	,'5000'	,'25000',	'23')GO
 
 EXEC sp_addextendedproperty
 	@name = N'MS_Description',	@value = 'Cita que el sistema de C gestiona',
@@ -1593,8 +1589,8 @@ GO
 		SET @DetalleError = 'Error insertando una Cita. Número de Error: ' + @NumeroDeError
 		
 	END CATCH
-
-CREATE PROCEDURE SP_Cita_Actualizar
+GO
+CREATE OR ALTER PROCEDURE SP_Cita_Actualizar
 	@IdCita int,
     @FechaHora datetime,
     @IdPaciente int,
@@ -1612,7 +1608,7 @@ CREATE PROCEDURE SP_Cita_Actualizar
 		BEGIN TRANSACTION
 			DECLARE @ExisteCita BIT
 		
-			SET @ExisteCita = dbo.FN_Cita_SeleccionarIdCita(@ExisteCita)
+			SET @ExisteCita = dbo.FN_Cita_VerificaExistenciaPorId(@ExisteCita)
 		
 			IF(@ExisteCita = 1)
 				BEGIN
@@ -1622,7 +1618,7 @@ CREATE PROCEDURE SP_Cita_Actualizar
                         FechaHora=@FechaHora ,
                         IdPaciente=@IdPaciente, 
                         IdDoctor= @IdDoctor, 
-                        IdConsultorio= @IdConsultorio ,
+                        @IdConsultorio= @IdConsultorio ,
                         MontoConsulta= @MontoConsulta ,
                         MontoMedicamento = @MontoMedicamento,
                         MontoTotal =@MontoTotal ,
@@ -1652,7 +1648,7 @@ CREATE PROCEDURE SP_Cita_Actualizar
 		SET @DetalleError = 'Error actualizado el Cita: '+	@IdCita	+ '. Número de Error: ' + @NumeroDeError		
 
 	END CATCH
-
+GO
 CREATE OR ALTER PROCEDURE SP_Cita_Desactivar
 	@IdCita VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
@@ -1663,7 +1659,7 @@ CREATE OR ALTER PROCEDURE SP_Cita_Desactivar
 		BEGIN TRANSACTION
 			DECLARE @ExisteCita BIT
 
-			SET @ExisteCita = dbo.FN_Cita_SeleccionarPorId(@ExisteCita)
+			SET @ExisteCita = dbo.FN_Cita_VerificaExistenciaPorId(@ExisteCita)
 
 			IF(@ExisteCita = 1)
 				BEGIN
@@ -1694,9 +1690,9 @@ CREATE OR ALTER PROCEDURE SP_Cita_Desactivar
 		SET @DetalleError = 'Error al eliminar el Cita: '+	@IdCita	+ '. Número de Error: ' + @NumeroDeError
 
 	END CATCH
+	GO
 
-
-CREATE FUNCTION dbo.FN_Cita_SeleccionarPorId(
+CREATE OR ALTER FUNCTION dbo.FN_Cita_SeleccionarPorId(
 	@IdCita VARCHAR(10)
 )
 RETURNS TABLE AS
@@ -1704,15 +1700,15 @@ RETURNS TABLE AS
 		SELECT * 
 		FROM VW_Cita_SeleccionarTodos AS Cita
 		WHERE 
-			Cita = @IdCita
-
-CREATE FUNCTION dbo.FN_Cita_SeleccionarTodos()
+			IdCita = @IdCita
+GO
+CREATE OR ALTER FUNCTION dbo.FN_Cita_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_Cita_SeleccionarTodos
-
-CREATE FUNCTION dbo.FN_Cita_VerificaExistenciaPorId ( 
+GO
+CREATE OR ALTER FUNCTION dbo.FN_Cita_VerificaExistenciaPorId ( 
 	@IdCita VARCHAR(10))
 RETURNS BIT AS
 BEGIN
@@ -1722,11 +1718,11 @@ BEGIN
 	 
     RETURN @ExisteCita
 END;
-
-CREATE VIEW VW_Cita_SeleccionarTodos
+GO
+CREATE OR ALTER VIEW VW_Cita_SeleccionarTodos
 AS 
 	SELECT IdCita FROM Cita WHERE Activo = 1
-
+GO
 create table EstadoCita(
     idEstado int,
     Estado varchar(25)not null,
@@ -1792,7 +1788,7 @@ EXEC sp_addextendedproperty
    	@level1type = N'Table',		@level1name = 'EstadoCita', 
    	@level2type = N'Column',	@level2name = 'ModificadoPor'
 GO
-CREATE FUNCTION FN_EstadoCita_VerificaExistenciaPorId(@idEstado INT)
+CREATE OR ALTER FUNCTION FN_EstadoCita_VerificaExistenciaPorId(@idEstado INT)
 	RETURNS BIT AS
 BEGIN 
 	DECLARE @ExisteEstadoCita BIT;
@@ -1830,8 +1826,8 @@ CREATE OR ALTER PROCEDURE SP_EstadoCita_Insertar
 		SET @DetalleError = 'Error insertando un EstadoCita. Número de Error: ' + @NumeroDeError
 		
 	END CATCH
-
-CREATE PROCEDURE SP_EstadoCita_Actualizar
+	GO
+CREATE OR ALTER PROCEDURE SP_EstadoCita_Actualizar
 	@idEstado VARCHAR(10),
 	@Nombre Varchar(20),
 	@ModificadoPor VARCHAR(60),
@@ -1842,7 +1838,7 @@ CREATE PROCEDURE SP_EstadoCita_Actualizar
 		BEGIN TRANSACTION
 			DECLARE @ExisteEstadoCita BIT
 		
-			SET @ExisteEstadoCita = dbo.FN_EstadoCita_SeleccionaridEstado (@ExisteEstadoCita)
+			SET @ExisteEstadoCita = dbo.FN_EstadoCita_VerificaExistenciaPorId (@ExisteEstadoCita)
 		
 			IF(@ExisteEstadoCita = 1)
 				BEGIN
@@ -1875,7 +1871,7 @@ CREATE PROCEDURE SP_EstadoCita_Actualizar
 		SET @DetalleError = 'Error actualizado el EstadoCita: '+	@idEstado	+ '. Número de Error: ' + @NumeroDeError		
 
 	END CATCH
-
+	GO
  CREATE OR ALTER PROCEDURE SP_EstadoCita_Desactivar
 	@idEstado VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
@@ -1886,7 +1882,7 @@ CREATE PROCEDURE SP_EstadoCita_Actualizar
 		BEGIN TRANSACTION
 			DECLARE @ExisteEstadoCita BIT
 
-			SET @ExisteEstadoCita = dbo.FN_EstadoCita_SeleccionaridEstado(@ExisteEstadoCita)
+			SET @ExisteEstadoCita = dbo.FN_EstadoCita_VerificaExistenciaPorId(@ExisteEstadoCita)
 
 			IF(@ExisteEstadoCita = 1)
 				BEGIN
@@ -1917,18 +1913,9 @@ CREATE PROCEDURE SP_EstadoCita_Actualizar
 		SET @DetalleError = 'Error al eliminar el EstadoCita: '+	@idEstado	+ '. Número de Error: ' + @NumeroDeError
 
 	END CATCH
-
-	CREATE OR ALTER PROCEDURE SP_ErroresBD_Insertar
-	@CreadoPor VARCHAR(60)
-	AS 
-	BEGIN
-		INSERT INTO ErroresBD (NumeroDeError, MensajeDelError, LineaDelError, CreadoPor)
-		VALUES (ERROR_NUMBER(), ERROR_MESSAGE(), ERROR_LINE(), @CreadoPor)
-
-		RETURN @@IDENTITY
-	END
-
-CREATE FUNCTION dbo.FN_EstadoCita_SeleccionarPorId(
+	GO
+	
+CREATE OR ALTER FUNCTION dbo.FN_EstadoCita_SeleccionarPorId(
 	@idEstado VARCHAR(10)
 )
 RETURNS TABLE AS
@@ -1936,15 +1923,15 @@ RETURNS TABLE AS
 		SELECT * 
 		FROM VW_EstadoCita_SeleccionarTodos AS EstadoCita
 		WHERE 
-			idEstado = @idEstado
-
-CREATE FUNCTION dbo.FN_EstadoCita_SeleccionarTodos()
+			@idEstado = @idEstado
+GO
+CREATE OR ALTER FUNCTION dbo.FN_EstadoCita_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_EstadoCita_SeleccionarTodos
-
-CREATE FUNCTION dbo.FN_EstadoCita_VerificaExistenciaPorId ( 
+GO
+CREATE OR ALTER FUNCTION dbo.FN_EstadoCita_VerificaExistenciaPorId ( 
 	@idEstado VARCHAR(10))
 RETURNS BIT AS
 BEGIN
@@ -1953,13 +1940,13 @@ BEGIN
 	SET @ExisteEstadoCita = (SELECT count(idEstado) FROM EstadoCita WHERE idEstado = @idEstado)
 	 
     RETURN @ExisteEstadoCita
-END;
-
-CREATE VIEW VW_EstadoCita_SeleccionarTodos
+END
+GO
+CREATE OR ALTER VIEW VW_EstadoCita_SeleccionarTodos
 AS 
 	SELECT idEstado FROM EstadoCita WHERE Activo = 1
 
-
+GO
 Create Table DiagnosticoCita(
     IdCita int,
     IdEnfermedad nvarchar(50)not null,
@@ -2032,7 +2019,7 @@ GO
 	BEGIN TRY		
 		BEGIN TRANSACTION
 			
-			INSERT INTO DiagnosticoCita(IdCita, IdEnfermedades, CreadoPor)
+			INSERT INTO DiagnosticoCita(IdCita, IdEnfermedad, CreadoPor)
 			VALUES(@IdCita, @IdEnfermedades, @CreadoPor)		
 
 			SET @ExisteError = 0
@@ -2050,8 +2037,8 @@ GO
 		SET @DetalleError = 'Error insertando un DiagnosticoCita. Número de Error: ' + @NumeroDeError
 		
 	END CATCH
-
-CREATE PROCEDURE SP_DiagnosticoCita_Actualizar
+GO
+CREATE OR ALTER PROCEDURE SP_DiagnosticoCita_Actualizar
 	@IdCita int,
 	@IdEnfermedades int,
 	@ModificadoPor VARCHAR(60),
@@ -2062,7 +2049,7 @@ CREATE PROCEDURE SP_DiagnosticoCita_Actualizar
 		BEGIN TRANSACTION
 			DECLARE @ExisteDiagnosticoCita BIT
 		
-			SET @ExisteDiagnosticoCita = dbo.FN_DiagnosticoCita_SeleccionarPorId(@ExisteDiagnosticoCita)
+			SET @ExisteDiagnosticoCita = dbo.FN_DiagnosticoCita_VerificaExistenciaPorId(@ExisteDiagnosticoCita)
 		
 			IF(@ExisteDiagnosticoCita = 1)
 				BEGIN
@@ -2093,7 +2080,7 @@ CREATE PROCEDURE SP_DiagnosticoCita_Actualizar
 		SET @DetalleError = 'Error actualizado el Diagnostico cita: '+	@IdCita	+ '. Número de Error: ' + @NumeroDeError		
 
 	END CATCH
-
+go
 CREATE OR ALTER PROCEDURE SP_DiagnosticoCita_Desactivar
 	@IdCita VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
@@ -2104,7 +2091,7 @@ CREATE OR ALTER PROCEDURE SP_DiagnosticoCita_Desactivar
 		BEGIN TRANSACTION
 			DECLARE @ExisteDiagnosticoCita BIT
 
-			SET @ExisteDiagnosticoCita = dbo.FN_DiagnosticoCita_SeleccionarPorId(@ExisteDiagnosticoCita)
+			SET @ExisteDiagnosticoCita = dbo.FN_DiagnosticoCita_VerificaExistenciaPorId(@ExisteDiagnosticoCita)
 
 			IF(@ExisteDiagnosticoCita = 1)
 				BEGIN
@@ -2135,9 +2122,9 @@ CREATE OR ALTER PROCEDURE SP_DiagnosticoCita_Desactivar
 		SET @DetalleError = 'Error al eliminar el DiagnosticoCita: '+	@IdCita	+ '. Número de Error: ' + @NumeroDeError
 
 	END CATCH
+	GO
 
-
-CREATE FUNCTION dbo.FN_DiagnosticoCita_SeleccionarPorId(
+CREATE OR ALTER FUNCTION dbo.FN_DiagnosticoCita_SeleccionarPorId(
 	@IdCita VARCHAR(10)
 )
 RETURNS TABLE AS
@@ -2146,28 +2133,28 @@ RETURNS TABLE AS
 		FROM VW_Cita_SeleccionarTodos AS DiagnosticoCita
 		WHERE 
 			IdCita = @IdCita
-
-CREATE FUNCTION dbo.FN_DiagnosticoCita_SeleccionarTodos()
+GO
+CREATE OR ALTER FUNCTION dbo.FN_DiagnosticoCita_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_DiagnosticoCita_SeleccionarTodos
-
-CREATE FUNCTION dbo.FN_DiagnosticoCita_VerificaExistenciaPorId ( 
+GO
+CREATE OR ALTER FUNCTION dbo.FN_DiagnosticoCita_VerificaExistenciaPorId( 
 	@IdCita VARCHAR(10))
 RETURNS BIT AS
 BEGIN
 	DECLARE @ExisteDiagnosticoCita BIT;
 	
-	SET @ExisteDiagnosticoCita = (SELECT count(IdCita) FROM Doctores WHERE IdCita = @IdCita)
+	SET @ExisteDiagnosticoCita = (SELECT count(IdCita) FROM DiagnosticoCita WHERE IdCita = @IdCita)
 	 
     RETURN @ExisteDiagnosticoCita
-END;
-
-CREATE VIEW VW_DiagnosticoCita_SeleccionarTodos
+END
+GO
+CREATE OR ALTER VIEW VW_DiagnosticoCita_SeleccionarTodos
 AS 
 	SELECT IdCita FROM Cita WHERE Activo = 1
-
+GO
 
 
 
@@ -2182,16 +2169,15 @@ Create Table MedicamentoCitas(
 	ModificadoPor VARCHAR(60) NULL,
  constraint PK_MedicamentoCitas primary key (Precio),
  CONSTRAINT FK_MedicamentoCitas_IdCita FOREIGN KEY(IdCita) REFERENCES Cita(IdCita),
- CONSTRAINT FK_MedicamentoCitas_IdMedicamento FOREIGN KEY(IdMedicamento) REFERENCES Medicamentos(IdMedicamento),
- CONSTRAINT FK_MedicamentoCitas_Precio FOREIGN KEY(Precio) REFERENCES Medicamentos(Precio),
-);
-GO
+ CONSTRAINT FK_MedicamentoCitas_IdMedicamento FOREIGN KEY(IdMedicamento) REFERENCES Medicamentos(IdMedicamento)
+) GO
+
 INSERT INTO MedicamentoCitas (IdCita, IdMedicamento, Precio) 
 VALUES 
 ('54'	,'23',	'1200'),
 ('21'	,'38',	'1500'),
 ('36'	,'16'	,'2000'),
-('24'	,'24'	,'5000')
+('24'	,'24'	,'5000')GO
 
 
 
@@ -2261,7 +2247,7 @@ GO
 	BEGIN TRY		
 		BEGIN TRANSACTION
 			
-			INSERT INTO MedicamentosCitas(IdCita , IdMedicamento,Precio, CreadoPor)
+			INSERT INTO MedicamentoCitas(IdCita,IdMedicamento,Precio, CreadoPor)
 			VALUES(@IdCita ,@IdMedicamento,@Precio,  @CreadoPor)		
 
 			SET @ExisteError = 0
@@ -2279,8 +2265,9 @@ GO
 		SET @DetalleError = 'Error insertando un medicamento. Número de Error: ' + @IdCita
 		
 	END CATCH
+GO
 
-CREATE PROCEDURE SP_MedicamentosCitas_Actualizar
+CREATE OR ALTER PROCEDURE SP_MedicamentosCitas_Actualizar
 	@IdCita VARCHAR(10),
 	@IdMedicamento int,
 	@Precio decimal,
@@ -2292,13 +2279,13 @@ CREATE PROCEDURE SP_MedicamentosCitas_Actualizar
 		BEGIN TRANSACTION
 			DECLARE @ExisteMedicamentosCitas BIT
 		
-			SET @ExisteMedicamentosCitas = dbo.FN_MedicamentosCitas_SeleccionarPorId(@ExisteMedicamentosCitas)
+			SET @ExisteMedicamentosCitas = dbo.FN_MedicamentosCitas_VerificaExistenciaPorId(@ExisteMedicamentosCitas)
 		
 			IF(@ExisteMedicamentosCitas = 1)
 				BEGIN
-					UPDATE MedicamentosCitas 
+					UPDATE MedicamentoCitas
 					SET
-					    @Precio=@Precio,
+					    Precio=@Precio,
 						FechaModificacion = GETDATE(),
 						ModificadoPor = @ModificadoPor
 					WHERE 
@@ -2324,7 +2311,7 @@ CREATE PROCEDURE SP_MedicamentosCitas_Actualizar
 		SET @DetalleError = 'Error actualizado el MedicamentosCitas: '+	@IdCita	+ '. Número de Error: ' + @NumeroDeError		
 
 	END CATCH
-
+	GO
 CREATE OR ALTER PROCEDURE SP_MedicamentosCitas_Desactivar
 	@IdCita  VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
@@ -2335,11 +2322,11 @@ CREATE OR ALTER PROCEDURE SP_MedicamentosCitas_Desactivar
 		BEGIN TRANSACTION
 			DECLARE @ExisteMedicamentosCitas BIT
 
-			SET @ExisteMedicamentosCitas = dbo.FN_MedicamentosCitas_SeleccionarPorId(@NumeroMedicamentoCitas)
+			SET @ExisteMedicamentosCitas = dbo.FN_MedicamentosCitas_VerificaExistenciaPorId(@IdCita)
 
 			IF(@ExisteMedicamentosCitas = 1)
 				BEGIN
-					UPDATE MedicamentosCitas
+					UPDATE MedicamentoCitas
 					SET
 						Activo = 0,
 						FechaModificacion = GETDATE(),
@@ -2366,7 +2353,7 @@ CREATE OR ALTER PROCEDURE SP_MedicamentosCitas_Desactivar
 		SET @DetalleError = 'Error al eliminar el MedicamentosCitas: '+	@IdCita 	+ '. Número de Error: ' + @NumeroDeError
 
 	END CATCH
-
+GO
 	CREATE OR ALTER PROCEDURE SP_MedicamentosCitas_Insertar
 	@IdCita  VARCHAR(10),
 	@CreadoPor VARCHAR(60),
@@ -2376,7 +2363,7 @@ CREATE OR ALTER PROCEDURE SP_MedicamentosCitas_Desactivar
 	BEGIN TRY		
 		BEGIN TRANSACTION
 			
-			INSERT INTO MedicamentosCitas(IdCita ,  CreadoPor)
+			INSERT INTO MedicamentoCitas(IdCita ,  CreadoPor)
 			VALUES(@IdCita ,  @CreadoPor)		
 
 			SET @ExisteError = 0
@@ -2394,9 +2381,9 @@ CREATE OR ALTER PROCEDURE SP_MedicamentosCitas_Desactivar
 		SET @DetalleError = 'Error insertando MedicamentosCitas. Número de Error: ' + @NumeroDeError
 		
 	END CATCH
+	GO
 
-
-CREATE FUNCTION dbo.FN_MedicamentosCitas_SeleccionarPorId(
+CREATE OR ALTER FUNCTION dbo.FN_MedicamentosCitas_SeleccionarPorId(
 	@IdCita VARCHAR(10)
 )
 RETURNS TABLE AS
@@ -2405,14 +2392,14 @@ RETURNS TABLE AS
 		FROM VW_MedicamentosCitas_SeleccionarTodos AS MedicamentosCitas
 		WHERE 
 			IdCita = @IdCita 
-
-CREATE FUNCTION dbo.FN_MedicamentosCitas_SeleccionarTodos()
+GO
+CREATE OR ALTER FUNCTION dbo.FN_MedicamentosCitas_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_MedicamentosCitas_SeleccionarTodos
-
-CREATE FUNCTION dbo.FN_MedicamentosCitas_VerificaExistenciaPorId ( 
+GO
+CREATE OR ALTER FUNCTION dbo.FN_MedicamentosCitas_VerificaExistenciaPorId ( 
 	@IdCita  VARCHAR(10))
 RETURNS BIT AS
 BEGIN
@@ -2421,8 +2408,9 @@ BEGIN
 	SET @ExisteMedicamentosCitas = (SELECT count(IdCita ) FROM MedicamentoCitas WHERE IdCita  = @IdCita)
 	 
     RETURN @ExisteMedicamentosCitas
-END;
-
-CREATE VIEW VW_MedicamentosCitas_SeleccionarTodos
+END
+GO
+CREATE OR ALTER VIEW VW_MedicamentoSCitas_SeleccionarTodos
 AS 
 	SELECT IdCita  FROM MedicamentoCitas WHERE Activo = 1
+GO
