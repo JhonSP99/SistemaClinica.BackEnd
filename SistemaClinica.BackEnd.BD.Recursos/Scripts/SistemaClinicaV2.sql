@@ -54,7 +54,7 @@ EXEC sp_addextendedproperty
    	@level1type = N'Table',		@level1name = 'ErroresBD', 
    	@level2type = N'Column',	@level2name = 'CreadoPor'
 GO
-CREATE OR ALTER PROCEDURE SP_ErroresBD_Insertar
+CREATE PROCEDURE SP_ErroresBD_Insertar
 	@CreadoPor VARCHAR(60)
 	AS 
 	BEGIN
@@ -79,13 +79,7 @@ CREATE TABLE Clinica(
 	CONSTRAINT PK_Clinica PRIMARY KEY(IdClinica)
 )
 GO
-INSERT INTO Clinica (IdClinica, Nombre, Lugar, Telefono, Email) 
-VALUES 
-('123', 'clinica valle la estrella'	,'Limon',	'26563122'	,'clinicavalleestrella@gmail.com'),
-('345',	'clinica Santa cruz	','Guanacaste'	,'26554812',	'clinicasantacruz@gmail.com'),
-('678',	'Fortuna',	'Limon'	,'26563647',	'clinicalafortuna@gmail.com'),
-('987',	'Clinca del sur'	,'Heredia'	,'26547485',	'clinicadelsur@gmail.com'),
-('145',	'clinica el Rosario',	'Cartago'	,'26503255',	'clinicaelrosario@gmail.com')
+
 
 EXEC sp_addextendedproperty
 	@name = N'MS_Description',	@value = 'clinicas que se gestionan  ',
@@ -157,8 +151,9 @@ EXEC sp_addextendedproperty
    	@level0type = N'Schema',	@level0name = 'dbo',
    	@level1type = N'Table',		@level1name = 'Clinica', 
    	@level2type = N'Column',	@level2name = 'ModificadoPor'
+go
 
-CREATE OR ALTER PROCEDURE SP_Clinica_Actualizar
+CREATE PROCEDURE SP_Clinica_Actualizar
 	@IdClinica VARCHAR(10),
 	@Horario VARCHAR(30),
 	@ModificadoPor VARCHAR(60),
@@ -203,7 +198,7 @@ CREATE OR ALTER PROCEDURE SP_Clinica_Actualizar
 	END CATCH
 GO
 
-CREATE OR ALTER PROCEDURE SP_Clinica_Desactivar
+CREATE PROCEDURE SP_Clinica_Desactivar
 	@IdClinica VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -246,7 +241,7 @@ CREATE OR ALTER PROCEDURE SP_Clinica_Desactivar
 	END CATCH
 GO
 
-CREATE OR ALTER PROCEDURE SP_Clinica_Insertar
+CREATE PROCEDURE SP_Clinica_Insertar
 	@IdClinica VARCHAR(10),
 	@Horario VARCHAR(30),
 	@CreadoPor VARCHAR(60),
@@ -275,7 +270,7 @@ CREATE OR ALTER PROCEDURE SP_Clinica_Insertar
 		
 	END CATCH
 GO
-CREATE OR ALTER FUNCTION FN_Clinica_SeleccionarPorId(
+CREATE  FUNCTION FN_Clinica_SeleccionarPorId(
 	@IdClinica VARCHAR(10)
 )
 
@@ -289,14 +284,14 @@ RETURNS TABLE AS
 
 GO
 
-CREATE OR ALTER FUNCTION FN_Clinica_SeleccionarTodos()
+CREATE  FUNCTION FN_Clinica_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_Clinica_SeleccionarTodos
 GO
 
-CREATE OR ALTER FUNCTION FN_Clinica_VerificaExistenciaPorId (@IdClinica VARCHAR(10))
+CREATE FUNCTION FN_Clinica_VerificaExistenciaPorId (@IdClinica VARCHAR(10))
 RETURNS BIT AS
 BEGIN
 	DECLARE @ExisteClinica BIT;
@@ -308,7 +303,7 @@ END;
 GO
 
 
-CREATE OR ALTER VIEW VW_Clinica_SeleccionarTodos
+CREATE  VIEW VW_Clinica_SeleccionarTodos
 AS 
 	SELECT IdClinica FROM Clinica WHERE Activo = 1
 
@@ -330,13 +325,7 @@ CREATE TABLE Paciente(
 	CONSTRAINT PK_Paciente PRIMARY KEY(Idpaciente)
 )
 GO
-INSERT INTO Paciente (Idpaciente, Nombre, Apellidos, FechaNacimiento, Telefono, Email) 
-VALUES 
-('5-0145-0451',	'Juan',	'Mora',	'1981-07-24 22:55:44'	,'89232315'	,'juan24@gmail.com'),
-('2-0841-0362'	,'Lucia',	'Venegas',	'1986-04-12 12:45:22',	'86235661'	,'mora123@gmail.com'),
-('5-0654-0953'	,'Pedro',	'Lopez',	'1995-03-25 11:30:33',	'72356721'	,'pl4319@gmail.com'),
-('4-0204-0921',	'Luis'	,'Villegas'	,'2001-12-22 9:30:41',	'64246901'	,'villel234@gmail.com')
-GO
+
 
 EXEC sp_addextendedproperty
 	@name = N'MS_Description',	@value = 'Paciente que se gestionan  ',
@@ -417,7 +406,7 @@ EXEC sp_addextendedproperty
 GO
 
 
-CREATE OR ALTER PROCEDURE SP_Paciente_Actualizar
+CREATE PROCEDURE SP_Paciente_Actualizar
 	@Idpaciente VARCHAR(10),
 	@Horario VARCHAR(30),
 	@ModificadoPor VARCHAR(60),
@@ -462,7 +451,7 @@ CREATE OR ALTER PROCEDURE SP_Paciente_Actualizar
 
 GO
 
-CREATE OR ALTER PROCEDURE SP_Paciente_Desactivar
+CREATE  PROCEDURE SP_Paciente_Desactivar
 	@Idpaciente VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -506,7 +495,7 @@ CREATE OR ALTER PROCEDURE SP_Paciente_Desactivar
 
 GO
 
-CREATE OR ALTER PROCEDURE SP_Paciente_Insertar
+CREATE  PROCEDURE SP_Paciente_Insertar
 	@Idpaciente VARCHAR(10),
 	@Horario VARCHAR(30),
 	@CreadoPor VARCHAR(60),
@@ -536,7 +525,7 @@ CREATE OR ALTER PROCEDURE SP_Paciente_Insertar
 	END CATCH
 GO
 
-CREATE OR ALTER FUNCTION FN_Paciente_SeleccionarPorId(@Idpaciente VARCHAR(10))
+CREATE FUNCTION FN_Paciente_SeleccionarPorId(@Idpaciente VARCHAR(10))
 
 
 RETURNS TABLE AS
@@ -548,14 +537,14 @@ RETURNS TABLE AS
 
 GO
 
-CREATE OR ALTER FUNCTION FN_Paciente_SeleccionarTodos()
+CREATE  FUNCTION FN_Paciente_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_Paciente_SeleccionarTodos
 GO
 
-CREATE OR ALTER FUNCTION FN_Paciente_VerificaExistenciaPorId ( 
+CREATE  FUNCTION FN_Paciente_VerificaExistenciaPorId ( 
 	@Idpaciente VARCHAR(10))
 RETURNS BIT AS
 BEGIN
@@ -567,7 +556,7 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER VIEW VW_Paciente_SeleccionarTodos
+CREATE VIEW VW_Paciente_SeleccionarTodos
 AS 
 	SELECT Idpaciente, Horario FROM Paciente WHERE Activo = 1
 GO
@@ -589,13 +578,6 @@ CREATE TABLE Consultorio(
 	CONSTRAINT FK_Consultorio_IdClinica FOREIGN KEY(IdClinica) REFERENCES Clinica(IdClinica),
 )
 GO
-INSERT INTO Consultorio (IdConsultorio, IdClinica, Nombreconsultorio, Direccion, Telefono, Email) 
-VALUES 
-('11',	'123',	'grip',	'Pasillo sur'	,'26563145',	'consultorio1@gmail.com'),
-('29'	,'345',	'pul'	,'pasillo norte',	'26554456',	'cosultorio2@gmail.com'),
-('33'	,'678',	'cora',	'pasillo central', 	'26564512'	,'consultorio3@gmail.com'),
-('44',	'987',	'pech',	'segundo piso',	'26541247'	,'consultorio4@gmail.com'),
-('55'	,'145',	'nar',	'segundo piso'	,'26503956'	,'consultorio5@gmail.com')
 
 EXEC sp_addextendedproperty
 	@name = N'MS_Description',	@value = 'consultorio  del sistema ',
@@ -673,7 +655,7 @@ GO
 
 
 
-CREATE OR ALTER PROCEDURE SP_Consultorio_Actualizar
+CREATE  PROCEDURE SP_Consultorio_Actualizar
 	@IdConsultorio VARCHAR(10),
 	@Horario VARCHAR(30),
 	@ModificadoPor VARCHAR(60),
@@ -717,7 +699,7 @@ CREATE OR ALTER PROCEDURE SP_Consultorio_Actualizar
 	END CATCH
 
 GO
-CREATE OR ALTER PROCEDURE SP_Consultorio_Desactivar
+CREATE PROCEDURE SP_Consultorio_Desactivar
 	@IdConsultorio VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -762,7 +744,7 @@ CREATE OR ALTER PROCEDURE SP_Consultorio_Desactivar
 
 
 
-CREATE OR ALTER PROCEDURE SP_Consultorio_Insertar
+CREATE  PROCEDURE SP_Consultorio_Insertar
 	@IdConsultorio VARCHAR(10),
 	@Horario VARCHAR(30),
 	@CreadoPor VARCHAR(60),
@@ -791,7 +773,7 @@ CREATE OR ALTER PROCEDURE SP_Consultorio_Insertar
 		
 	END CATCH
 	GO
-CREATE OR ALTER FUNCTION FN_Colsultorio_SeleccionarPorId(@IdConsultorio VARCHAR(10))
+CREATE  FUNCTION FN_Colsultorio_SeleccionarPorId(@IdConsultorio VARCHAR(10))
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
@@ -802,14 +784,14 @@ GO
 
 
 
-CREATE OR ALTER FUNCTION FN_Consultorio_SeleccionarTodos()
+CREATE FUNCTION FN_Consultorio_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_Consultorio_SeleccionarTodos
 GO
 
-CREATE OR ALTER FUNCTION FN_Consultorio_VerificaExistenciaPorId ( 
+CREATE  FUNCTION FN_Consultorio_VerificaExistenciaPorId ( 
 	@IdConsultorio VARCHAR(10))
 RETURNS BIT AS
 BEGIN
@@ -822,7 +804,7 @@ END;
 GO
 
 
-CREATE OR ALTER VIEW VW_Consultorio_SeleccionarTodos
+CREATE  VIEW VW_Consultorio_SeleccionarTodos
 AS 
 	SELECT * FROM Consultorio WHERE Activo = 1
 GO
@@ -886,7 +868,7 @@ EXEC sp_addextendedproperty
    	@level2type = N'Column',	@level2name = 'ModificadoPor'
 GO
 
-CREATE OR ALTER PROCEDURE SP_Doctor_Actualizar
+CREATE PROCEDURE SP_Doctor_Actualizar
 	@IdDoctor VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -928,7 +910,7 @@ CREATE OR ALTER PROCEDURE SP_Doctor_Actualizar
 
 	END CATCH
 	GO
-CREATE OR ALTER PROCEDURE SP_Doctor_Desactivar
+CREATE  PROCEDURE SP_Doctor_Desactivar
 	@IdDoctor VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -970,7 +952,7 @@ CREATE OR ALTER PROCEDURE SP_Doctor_Desactivar
 
 	END CATCH
 	GO
-	CREATE OR ALTER PROCEDURE SP_Doctor_Insertar
+	CREATE  PROCEDURE SP_Doctor_Insertar
 	@IdDoctor VARCHAR(10),
 	@CreadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -998,7 +980,7 @@ CREATE OR ALTER PROCEDURE SP_Doctor_Desactivar
 		
 	END CATCH
 	GO
-CREATE OR ALTER FUNCTION dbo.FN_Doctor_SeleccionarPorId(
+CREATE FUNCTION dbo.FN_Doctor_SeleccionarPorId(
 @IdDoctor VARCHAR(10)
 )
 RETURNS TABLE AS
@@ -1008,13 +990,13 @@ RETURNS TABLE AS
 		WHERE 
 			Doctores.Id_doctor = @IdDoctor
 GO
-CREATE OR ALTER FUNCTION dbo.FN_Doctor_SeleccionarTodos()
+CREATE  FUNCTION dbo.FN_Doctor_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_Doctor_SeleccionarTodos
 GO
-CREATE OR ALTER FUNCTION dbo.FN_Doctor_VerificaExistenciaPorId ( 
+CREATE  FUNCTION dbo.FN_Doctor_VerificaExistenciaPorId ( 
 	@IdDoctor VARCHAR(10))
 RETURNS BIT AS
 BEGIN
@@ -1025,7 +1007,7 @@ BEGIN
     RETURN @ExisteDoctor
 END
 GO
-CREATE OR ALTER VIEW VW_Doctor_SeleccionarTodos
+CREATE  VIEW VW_Doctor_SeleccionarTodos
 AS 
 	SELECT IdDoctor FROM Doctores WHERE Activo = 1
 GO
@@ -1082,7 +1064,7 @@ EXEC sp_addextendedproperty
    	@level2type = N'Column',	@level2name = 'ModificadoPor'
 GO
 
-CREATE OR ALTER PROCEDURE SP_Enfermedad_Actualizar
+CREATE PROCEDURE SP_Enfermedad_Actualizar
 	@IdEnfermedad VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -1124,7 +1106,7 @@ CREATE OR ALTER PROCEDURE SP_Enfermedad_Actualizar
 
 	END CATCH
 GO
-CREATE OR ALTER PROCEDURE SP_Enfermedad_Desactivar
+CREATE  PROCEDURE SP_Enfermedad_Desactivar
 	@IdEnfermedad VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -1166,7 +1148,7 @@ CREATE OR ALTER PROCEDURE SP_Enfermedad_Desactivar
 
 	END CATCH
 	GO
-	CREATE OR ALTER PROCEDURE SP_Enfermedad_Insertar
+	CREATE  PROCEDURE SP_Enfermedad_Insertar
 	@IdEnfermedad VARCHAR(10),
 	@CreadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -1194,7 +1176,7 @@ CREATE OR ALTER PROCEDURE SP_Enfermedad_Desactivar
 		
 	END CATCH
 	GO
-CREATE OR ALTER FUNCTION dbo.FN_Enfermedad_SeleccionarPorId(
+CREATE  FUNCTION dbo.FN_Enfermedad_SeleccionarPorId(
 	@IdEnfermedad VARCHAR(10)
 )
 RETURNS TABLE AS
@@ -1204,13 +1186,13 @@ RETURNS TABLE AS
 		WHERE 
 			Enfermedades.Id_Enfermedad = @IdEnfermedad
 GO
-CREATE OR ALTER FUNCTION dbo.FN_Enfermedad_SeleccionarTodos()
+CREATE  FUNCTION dbo.FN_Enfermedad_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_Enfermedad_SeleccionarTodos
 GO
-CREATE OR ALTER FUNCTION dbo.FN_Enfermedad_VerificaExistenciaPorId ( 
+CREATE FUNCTION dbo.FN_Enfermedad_VerificaExistenciaPorId ( 
 	@IdEnfermedad VARCHAR(10))
 RETURNS BIT AS
 BEGIN
@@ -1221,7 +1203,7 @@ BEGIN
     RETURN @ExisteEnfermedad
 END;
 GO
-CREATE OR ALTER VIEW VW_Enfermedad_SeleccionarTodos
+CREATE VIEW VW_Enfermedad_SeleccionarTodos
 AS 
 	SELECT Id_Enfermedad FROM Enfermedades WHERE Activo = 1
 GO
@@ -1305,7 +1287,7 @@ EXEC sp_addextendedproperty
    	@level1type = N'Table',		@level1name = 'Medicamentos', 
    	@level2type = N'Column',	@level2name = 'ModificadoPor'
 GO
-CREATE OR ALTER PROCEDURE SP_Medicamento_Actualizar
+CREATE PROCEDURE SP_Medicamento_Actualizar
 	@IdMedicamento VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -1347,7 +1329,7 @@ CREATE OR ALTER PROCEDURE SP_Medicamento_Actualizar
 
 	END CATCH
 GO
-CREATE OR ALTER PROCEDURE SP_Medicamentos_Desactivar
+CREATE  PROCEDURE SP_Medicamentos_Desactivar
 	@IdMedicamento VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -1389,7 +1371,7 @@ CREATE OR ALTER PROCEDURE SP_Medicamentos_Desactivar
 
 	END CATCH
 	GO
-CREATE OR ALTER PROCEDURE SP_Medicamento_Insertar
+CREATE  PROCEDURE SP_Medicamento_Insertar
 	@IdMedicamento VARCHAR(10),
 	@CreadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -1418,7 +1400,7 @@ CREATE OR ALTER PROCEDURE SP_Medicamento_Insertar
 	END CATCH
 	GO
 
-CREATE OR ALTER FUNCTION dbo.FN_Medicamento_SeleccionarPorId(
+CREATE  FUNCTION dbo.FN_Medicamento_SeleccionarPorId(
 	@IdMedicamento VARCHAR(10)
 )
 RETURNS TABLE AS
@@ -1428,13 +1410,13 @@ RETURNS TABLE AS
 		WHERE 
 			Medicamentos.Id_Medicamento = @IdMedicamento
 GO
-CREATE OR ALTER FUNCTION dbo.FN_Medicamento_SeleccionarTodos()
+CREATE  FUNCTION dbo.FN_Medicamento_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_Medicamento_SeleccionarTodos
 GO
-CREATE OR ALTER FUNCTION dbo.FN_Medicamento_VerificaExistenciaPorId ( 
+CREATE  FUNCTION dbo.FN_Medicamento_VerificaExistenciaPorId ( 
 	@IdMedicamento VARCHAR(10))
 RETURNS BIT AS
 BEGIN
@@ -1445,7 +1427,7 @@ BEGIN
     RETURN @ExisteMedicamento
 END
 GO
-CREATE OR ALTER VIEW VW_Medicamento_SeleccionarTodos
+CREATE  VIEW VW_Medicamento_SeleccionarTodos
 AS 
 	SELECT IdMedicamento FROM Medicamentos WHERE Activo = 1
 GO
@@ -1470,12 +1452,7 @@ Create table Cita(
  CONSTRAINT FK_Cita_IdEstado FOREIGN KEY(IdEstado) REFERENCES EstadoCita(IdEstado),
 );
 GO
-INSERT INTO Cita (IdCita, FechaHora, IdPaciente, IdDoctor, MontoConsulta, MontoMedicamento, MontoTotal, IdEstado) 
-VALUES 
-('54',	'2022-07-24 22:55:44',	'5-0145-0451',	'1-0355-0455'	,	'20000',	'2500'	,'22500'	,'20'),
-('21',	'2022-05-21 20:55:44',	'2-0841-0362',	'2-0378-0123'		,'20000',	'3500',	'23500',	'21'),
-('36'	,'2022-06-29 21:55:44',	'5-0654-0953',	'7-008-0432',		'20000'	,'4000',	'24000',	'22'),
-('24',	'2022-08-19 23:55:44'	,'4-0204-0921'	,'5-0987-0456',		'20000'	,'5000'	,'25000',	'23')GO
+
 
 EXEC sp_addextendedproperty
 	@name = N'MS_Description',	@value = 'Cita que el sistema de C gestiona',
@@ -1555,7 +1532,7 @@ EXEC sp_addextendedproperty
    	@level2type = N'Column',	@level2name = 'ModificadoPor'
 GO
 
-	CREATE OR ALTER PROCEDURE SP_Cita_Insertar
+	CREATE PROCEDURE SP_Cita_Insertar
 	@IdCita int,
     @FechaHora datetime,
     @IdPaciente int,
@@ -1590,7 +1567,7 @@ GO
 		
 	END CATCH
 GO
-CREATE OR ALTER PROCEDURE SP_Cita_Actualizar
+CREATE PROCEDURE SP_Cita_Actualizar
 	@IdCita int,
     @FechaHora datetime,
     @IdPaciente int,
@@ -1649,7 +1626,7 @@ CREATE OR ALTER PROCEDURE SP_Cita_Actualizar
 
 	END CATCH
 GO
-CREATE OR ALTER PROCEDURE SP_Cita_Desactivar
+CREATE PROCEDURE SP_Cita_Desactivar
 	@IdCita VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -1692,7 +1669,7 @@ CREATE OR ALTER PROCEDURE SP_Cita_Desactivar
 	END CATCH
 	GO
 
-CREATE OR ALTER FUNCTION dbo.FN_Cita_SeleccionarPorId(
+CREATE FUNCTION dbo.FN_Cita_SeleccionarPorId(
 	@IdCita VARCHAR(10)
 )
 RETURNS TABLE AS
@@ -1702,13 +1679,13 @@ RETURNS TABLE AS
 		WHERE 
 			IdCita = @IdCita
 GO
-CREATE OR ALTER FUNCTION dbo.FN_Cita_SeleccionarTodos()
+CREATE  FUNCTION dbo.FN_Cita_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_Cita_SeleccionarTodos
 GO
-CREATE OR ALTER FUNCTION dbo.FN_Cita_VerificaExistenciaPorId ( 
+CREATE  FUNCTION dbo.FN_Cita_VerificaExistenciaPorId ( 
 	@IdCita VARCHAR(10))
 RETURNS BIT AS
 BEGIN
@@ -1719,7 +1696,7 @@ BEGIN
     RETURN @ExisteCita
 END;
 GO
-CREATE OR ALTER VIEW VW_Cita_SeleccionarTodos
+CREATE  VIEW VW_Cita_SeleccionarTodos
 AS 
 	SELECT IdCita FROM Cita WHERE Activo = 1
 GO
@@ -1734,12 +1711,6 @@ create table EstadoCita(
 constraint PK_EstadoCita primary key (idEstado)
 );
 GO
-INSERT INTO EstadoCita (IdEstado, Estado) 
-VALUES 
-('20',	'pendiente'),
-('21'	,'en proceso'),
-('22'	,'finalizada'),
-('23'	,'cancelada')
 
 EXEC sp_addextendedproperty
 	@name = N'MS_Description',	@value = 'EstadoCita que el sistema de C gestiona',
@@ -1788,7 +1759,7 @@ EXEC sp_addextendedproperty
    	@level1type = N'Table',		@level1name = 'EstadoCita', 
    	@level2type = N'Column',	@level2name = 'ModificadoPor'
 GO
-CREATE OR ALTER FUNCTION FN_EstadoCita_VerificaExistenciaPorId(@idEstado INT)
+CREATE  FUNCTION FN_EstadoCita_VerificaExistenciaPorId(@idEstado INT)
 	RETURNS BIT AS
 BEGIN 
 	DECLARE @ExisteEstadoCita BIT;
@@ -1798,7 +1769,7 @@ RETURN @ExisteEstadoCita
 END
 GO
 
-CREATE OR ALTER PROCEDURE SP_EstadoCita_Insertar
+CREATE PROCEDURE SP_EstadoCita_Insertar
 	@idEstado VARCHAR(10),
 	@Nombre varchar(20),
 	@CreadoPor VARCHAR(60),
@@ -1827,7 +1798,7 @@ CREATE OR ALTER PROCEDURE SP_EstadoCita_Insertar
 		
 	END CATCH
 	GO
-CREATE OR ALTER PROCEDURE SP_EstadoCita_Actualizar
+CREATE  PROCEDURE SP_EstadoCita_Actualizar
 	@idEstado VARCHAR(10),
 	@Nombre Varchar(20),
 	@ModificadoPor VARCHAR(60),
@@ -1872,7 +1843,7 @@ CREATE OR ALTER PROCEDURE SP_EstadoCita_Actualizar
 
 	END CATCH
 	GO
- CREATE OR ALTER PROCEDURE SP_EstadoCita_Desactivar
+ CREATE  PROCEDURE SP_EstadoCita_Desactivar
 	@idEstado VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -1915,7 +1886,7 @@ CREATE OR ALTER PROCEDURE SP_EstadoCita_Actualizar
 	END CATCH
 	GO
 	
-CREATE OR ALTER FUNCTION dbo.FN_EstadoCita_SeleccionarPorId(
+CREATE  FUNCTION dbo.FN_EstadoCita_SeleccionarPorId(
 	@idEstado VARCHAR(10)
 )
 RETURNS TABLE AS
@@ -1925,13 +1896,13 @@ RETURNS TABLE AS
 		WHERE 
 			@idEstado = @idEstado
 GO
-CREATE OR ALTER FUNCTION dbo.FN_EstadoCita_SeleccionarTodos()
+CREATE  FUNCTION dbo.FN_EstadoCita_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_EstadoCita_SeleccionarTodos
 GO
-CREATE OR ALTER FUNCTION dbo.FN_EstadoCita_VerificaExistenciaPorId ( 
+CREATE  FUNCTION dbo.FN_EstadoCita_VerificaExistenciaPorId ( 
 	@idEstado VARCHAR(10))
 RETURNS BIT AS
 BEGIN
@@ -1942,7 +1913,7 @@ BEGIN
     RETURN @ExisteEstadoCita
 END
 GO
-CREATE OR ALTER VIEW VW_EstadoCita_SeleccionarTodos
+CREATE  VIEW VW_EstadoCita_SeleccionarTodos
 AS 
 	SELECT idEstado FROM EstadoCita WHERE Activo = 1
 
@@ -1960,12 +1931,7 @@ Create Table DiagnosticoCita(
  CONSTRAINT FK_DiagnosticoCita_IdCita FOREIGN KEY(IdCita) REFERENCES Cita(IdCita),
 );
 GO
-INSERT INTO DiagnosticoCita (IdCita, IdEnfermedad, Detalle) 
-VALUES 
-('54'	,'6',	'se cayo de un arbol'),
-('21',	'7',	'se quebro el pierna'),
-('36'	,'11'	,'se accidento en carro'),
-('24'	,'9'	,'se corto el brazo')
+
 
 EXEC sp_addextendedproperty
 	@name = N'MS_Description',	@value = 'DiagnosticoCita que el sistema de C gestiona',
@@ -2009,7 +1975,7 @@ EXEC sp_addextendedproperty
    	@level2type = N'Column',	@level2name = 'ModificadoPor'
 GO
 
-	CREATE OR ALTER PROCEDURE SP_DiagnosticoCita_Insertar
+	CREATE  PROCEDURE SP_DiagnosticoCita_Insertar
 	@IdCita int,
 	@IdEnfermedades int,
 	@CreadoPor VARCHAR(60),
@@ -2038,7 +2004,7 @@ GO
 		
 	END CATCH
 GO
-CREATE OR ALTER PROCEDURE SP_DiagnosticoCita_Actualizar
+CREATE  PROCEDURE SP_DiagnosticoCita_Actualizar
 	@IdCita int,
 	@IdEnfermedades int,
 	@ModificadoPor VARCHAR(60),
@@ -2081,7 +2047,7 @@ CREATE OR ALTER PROCEDURE SP_DiagnosticoCita_Actualizar
 
 	END CATCH
 go
-CREATE OR ALTER PROCEDURE SP_DiagnosticoCita_Desactivar
+CREATE  PROCEDURE SP_DiagnosticoCita_Desactivar
 	@IdCita VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -2124,7 +2090,7 @@ CREATE OR ALTER PROCEDURE SP_DiagnosticoCita_Desactivar
 	END CATCH
 	GO
 
-CREATE OR ALTER FUNCTION dbo.FN_DiagnosticoCita_SeleccionarPorId(
+CREATE  FUNCTION dbo.FN_DiagnosticoCita_SeleccionarPorId(
 	@IdCita VARCHAR(10)
 )
 RETURNS TABLE AS
@@ -2134,13 +2100,13 @@ RETURNS TABLE AS
 		WHERE 
 			IdCita = @IdCita
 GO
-CREATE OR ALTER FUNCTION dbo.FN_DiagnosticoCita_SeleccionarTodos()
+CREATE FUNCTION dbo.FN_DiagnosticoCita_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_DiagnosticoCita_SeleccionarTodos
 GO
-CREATE OR ALTER FUNCTION dbo.FN_DiagnosticoCita_VerificaExistenciaPorId( 
+CREATE FUNCTION dbo.FN_DiagnosticoCita_VerificaExistenciaPorId( 
 	@IdCita VARCHAR(10))
 RETURNS BIT AS
 BEGIN
@@ -2151,12 +2117,10 @@ BEGIN
     RETURN @ExisteDiagnosticoCita
 END
 GO
-CREATE OR ALTER VIEW VW_DiagnosticoCita_SeleccionarTodos
+CREATE  VIEW VW_DiagnosticoCita_SeleccionarTodos
 AS 
 	SELECT IdCita FROM Cita WHERE Activo = 1
 GO
-
-
 
 Create Table MedicamentoCitas(
     IdCita int,
@@ -2170,15 +2134,7 @@ Create Table MedicamentoCitas(
  constraint PK_MedicamentoCitas primary key (Precio),
  CONSTRAINT FK_MedicamentoCitas_IdCita FOREIGN KEY(IdCita) REFERENCES Cita(IdCita),
  CONSTRAINT FK_MedicamentoCitas_IdMedicamento FOREIGN KEY(IdMedicamento) REFERENCES Medicamentos(IdMedicamento)
-) GO
-
-INSERT INTO MedicamentoCitas (IdCita, IdMedicamento, Precio) 
-VALUES 
-('54'	,'23',	'1200'),
-('21'	,'38',	'1500'),
-('36'	,'16'	,'2000'),
-('24'	,'24'	,'5000')GO
-
+);
 
 
 EXEC sp_addextendedproperty
@@ -2186,48 +2142,81 @@ EXEC sp_addextendedproperty
    	@level0type = N'Schema',	@level0name = 'dbo',
   	@level1type = N'Table',		@level1name = 'MedicamentoCitas'
 GO
+
 EXEC sp_addextendedproperty 
 	@name = N'MS_Description',	@value = 'IdCita',
    	@level0type = N'Schema',	@level0name = 'dbo',
    	@level1type = N'Table',		@level1name = 'MedicamentoCitas', 
    	@level2type = N'Column',	@level2name = 'IdCita'
 GO
+
+
+
 EXEC sp_addextendedproperty 
 	@name = N'MS_Description',	@value = 'IdMedicamento',
    	@level0type = N'Schema',	@level0name = 'dbo',
    	@level1type = N'Table',		@level1name = 'MedicamentoCitas', 
    	@level2type = N'Column',	@level2name = 'IdMedicamento'
 GO
+
+
+
+
+
+
 EXEC sp_addextendedproperty 	
 	@name = N'MS_Description',	@value = 'Precio',
    	@level0type = N'Schema',	@level0name = 'dbo',
    	@level1type = N'Table',		@level1name = 'MedicamentoCitas', 
    	@level2type = N'Column',	@level2name = 'Precio'
 GO
+
+
+
+
+
 EXEC sp_addextendedproperty 
 	@name = N'MS_Description',	@value = 'Condición en la que se encuentra el registro: 1 = Activo; 0 = Inactivo o Borrado',
    	@level0type = N'Schema',	@level0name = 'dbo',
    	@level1type = N'Table',		@level1name = 'MedicamentoCitas', 
    	@level2type = N'Column',	@level2name = 'Activo'
 GO
+
+
+
+
 EXEC sp_addextendedproperty 
 	@name = N'MS_Description',	@value = 'Fecha de creación del registro',
    	@level0type = N'Schema',	@level0name = 'dbo',
    	@level1type = N'Table',		@level1name = 'MedicamentoCitas', 
    	@level2type = N'Column',	@level2name = 'FechaCreación'
 GO
+
+
+
 EXEC sp_addextendedproperty 
 	@name = N'MS_Description',	@value = 'Fecha de modificación del registro',
    	@level0type = N'Schema',	@level0name = 'dbo',
    	@level1type = N'Table',		@level1name = 'MedicamentoCitas', 
    	@level2type = N'Column',	@level2name = 'FechaModificación'
 GO
+
+
+
+
+
 EXEC sp_addextendedproperty 
 	@name = N'MS_Description',	@value = 'Nombre del usuario que crea el registro',
    	@level0type = N'Schema',	@level0name = 'dbo',
    	@level1type = N'Table',		@level1name = 'MedicamentoCitas', 
    	@level2type = N'Column',	@level2name = 'CreadoPor'
 GO
+
+
+
+
+
+
 EXEC sp_addextendedproperty 
 	@name = N'MS_Description',	@value = 'Nombre del usuario que modifica el registro',
    	@level0type = N'Schema',	@level0name = 'dbo',
@@ -2236,7 +2225,7 @@ EXEC sp_addextendedproperty
 GO
 
 
-	CREATE OR ALTER PROCEDURE SP_MedicamentosCitas_Insertar
+	CREATE  PROCEDURE SP_MedicamentosCitas_Insertar
 	@IdCita int,
 	@IdMedicamento int,
 	@Precio decimal,
@@ -2267,7 +2256,7 @@ GO
 	END CATCH
 GO
 
-CREATE OR ALTER PROCEDURE SP_MedicamentosCitas_Actualizar
+CREATE  PROCEDURE SP_MedicamentosCitas_Actualizar
 	@IdCita VARCHAR(10),
 	@IdMedicamento int,
 	@Precio decimal,
@@ -2312,7 +2301,7 @@ CREATE OR ALTER PROCEDURE SP_MedicamentosCitas_Actualizar
 
 	END CATCH
 	GO
-CREATE OR ALTER PROCEDURE SP_MedicamentosCitas_Desactivar
+CREATE  PROCEDURE SP_MedicamentosCitas_Desactivar
 	@IdCita  VARCHAR(10),
 	@ModificadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -2354,7 +2343,7 @@ CREATE OR ALTER PROCEDURE SP_MedicamentosCitas_Desactivar
 
 	END CATCH
 GO
-	CREATE OR ALTER PROCEDURE SP_MedicamentosCitas_Insertar
+	CREATE PROCEDURE SP_MedicamentosCitas_Insertar
 	@IdCita  VARCHAR(10),
 	@CreadoPor VARCHAR(60),
 	@ExisteError BIT OUTPUT,
@@ -2383,7 +2372,7 @@ GO
 	END CATCH
 	GO
 
-CREATE OR ALTER FUNCTION dbo.FN_MedicamentosCitas_SeleccionarPorId(
+CREATE  FUNCTION dbo.FN_MedicamentosCitas_SeleccionarPorId(
 	@IdCita VARCHAR(10)
 )
 RETURNS TABLE AS
@@ -2393,13 +2382,13 @@ RETURNS TABLE AS
 		WHERE 
 			IdCita = @IdCita 
 GO
-CREATE OR ALTER FUNCTION dbo.FN_MedicamentosCitas_SeleccionarTodos()
+CREATE  FUNCTION dbo.FN_MedicamentosCitas_SeleccionarTodos()
 RETURNS TABLE AS
 	RETURN 
 		SELECT * 
 		FROM VW_MedicamentosCitas_SeleccionarTodos
 GO
-CREATE OR ALTER FUNCTION dbo.FN_MedicamentosCitas_VerificaExistenciaPorId ( 
+CREATE  FUNCTION dbo.FN_MedicamentosCitas_VerificaExistenciaPorId ( 
 	@IdCita  VARCHAR(10))
 RETURNS BIT AS
 BEGIN
@@ -2410,7 +2399,7 @@ BEGIN
     RETURN @ExisteMedicamentosCitas
 END
 GO
-CREATE OR ALTER VIEW VW_MedicamentoSCitas_SeleccionarTodos
+CREATE  VIEW VW_MedicamentoSCitas_SeleccionarTodos
 AS 
 	SELECT IdCita  FROM MedicamentoCitas WHERE Activo = 1
 GO

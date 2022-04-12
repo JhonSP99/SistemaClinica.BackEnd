@@ -1,0 +1,27 @@
+﻿CREATE PROCEDURE SP_MedicamentosCitas_Insertar
+	@IdCita  VARCHAR(10),
+	@CreadoPor VARCHAR(60),
+	@ExisteError BIT OUTPUT,
+	@DetalleError VARCHAR(60) OUTPUT
+	AS
+	BEGIN TRY		
+		BEGIN TRANSACTION
+			
+			INSERT INTO MedicamentoCitas(IdCita ,  CreadoPor)
+			VALUES(@IdCita ,  @CreadoPor)		
+
+			SET @ExisteError = 0
+
+		COMMIT TRANSACTION
+	END TRY
+	BEGIN CATCH
+	
+		ROLLBACK TRANSACTION
+
+		DECLARE @NumeroDeError INT 
+		EXEC @NumeroDeError = SP_ErroresBD_Insertar @CreadoPor
+
+		SET @ExisteError = 1
+		SET @DetalleError = 'Error insertando MedicamentosCitas. Número de Error: ' + @NumeroDeError
+		
+	END CATCH
