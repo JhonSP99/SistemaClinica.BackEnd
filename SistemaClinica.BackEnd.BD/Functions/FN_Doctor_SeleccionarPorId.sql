@@ -6,4 +6,4 @@ RETURNS TABLE AS
 		SELECT * 
 		FROM VW_Doctor_SeleccionarTodos AS Doctores
 		WHERE 
-			Doctores.Id_doctor = @IdDoctor
+			Doctores.IdDoctor = @IdDoctor

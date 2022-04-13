@@ -6,4 +6,4 @@ RETURNS TABLE AS
 		SELECT * 
 		FROM VW_Enfermedad_SeleccionarTodos AS Enfermedades
 		WHERE 
-			Enfermedades.Id_Enfermedad = @IdEnfermedad
+			Enfermedades.IdEnfermedad = @IdEnfermedad

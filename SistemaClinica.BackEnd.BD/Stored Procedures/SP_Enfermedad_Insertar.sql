@@ -7,7 +7,7 @@
 	BEGIN TRY		
 		BEGIN TRANSACTION
 			
-			INSERT INTO Enfermedades(Id_Enfermedad,  CreadoPor)
+			INSERT INTO Enfermedades( IdEnfermedad,  CreadoPor)
 			VALUES(@IdEnfermedad,  @CreadoPor)		
 
 			SET @ExisteError = 0

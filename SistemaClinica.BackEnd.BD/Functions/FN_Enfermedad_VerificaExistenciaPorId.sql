@@ -4,7 +4,7 @@ RETURNS BIT AS
 BEGIN
 	DECLARE @ExisteEnfermedad BIT;
 	
-	SET @ExisteEnfermedad = (SELECT count(Id_Enfermedad) FROM Enfermedades WHERE Id_Enfermedad = @IdEnfermedad)
+	SET @ExisteEnfermedad = (SELECT count(IdEnfermedad) FROM Enfermedades WHERE IdEnfermedad = @IdEnfermedad)
 	 
     RETURN @ExisteEnfermedad
 END;

@@ -1,3 +1,4 @@
 ﻿CREATE VIEW VW_Enfermedad_SeleccionarTodos
 AS 
-	SELECT Id_Enfermedad FROM Enfermedades WHERE Activo = 1
+	SELECT IdEnfermedad FROM Enfermedades WHERE Activo = 1
+GO

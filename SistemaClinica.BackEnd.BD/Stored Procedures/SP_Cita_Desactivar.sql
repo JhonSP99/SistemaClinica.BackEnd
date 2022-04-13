@@ -14,11 +14,11 @@
 				BEGIN
 					UPDATE Cita
 					SET
-						Activo = 0,
+						
 						FechaModificacion = GETDATE(),
 						ModificadoPor = @ModificadoPor
 					WHERE 
-						@IdCita = @IdCita
+						IdCita = @IdCita
 
 					SET @ExisteError = 0
 				END 
@@ -39,3 +39,4 @@
 		SET @DetalleError = 'Error al eliminar el Cita: '+	@IdCita	+ '. Número de Error: ' + @NumeroDeError
 
 	END CATCH
+	GO

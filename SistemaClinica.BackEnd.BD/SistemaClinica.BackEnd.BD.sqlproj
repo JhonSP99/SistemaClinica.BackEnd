@@ -14,7 +14,7 @@
     <RootNamespace>SistemaClinica.BackEnd.BD</RootNamespace>
     <AssemblyName>SistemaClinica.BackEnd.BD</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
-    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DefaultFileStructure>BySchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <TargetLanguage>CS</TargetLanguage>
@@ -56,5 +56,95 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Tables\" />
+    <Folder Include="Views\" />
+    <Folder Include="Functions\" />
+    <Folder Include="Stored Procedures\" />
+    <Folder Include="Scripts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\ErroresBD.sql" />
+    <Build Include="Tables\Clinica.sql" />
+    <Build Include="Tables\Paciente.sql" />
+    <Build Include="Tables\Consultorio.sql" />
+    <Build Include="Tables\Doctores.sql" />
+    <Build Include="Tables\Enfermedades.sql" />
+    <Build Include="Tables\Medicamentos.sql" />
+    <Build Include="Tables\Cita.sql" />
+    <Build Include="Tables\EstadoCita.sql" />
+    <Build Include="Tables\DiagnosticoCita.sql" />
+    <Build Include="Tables\MedicamentoCitas.sql" />
+    <Build Include="Views\VW_Clinica_SeleccionarTodos.sql" />
+    <Build Include="Views\VW_Paciente_SeleccionarTodos.sql" />
+    <Build Include="Views\VW_Consultorio_SeleccionarTodos.sql" />
+    <Build Include="Views\VW_Doctor_SeleccionarTodos.sql" />
+    <Build Include="Views\VW_Enfermedad_SeleccionarTodos.sql" />
+    <Build Include="Views\VW_Cita_SeleccionarTodos.sql" />
+    <Build Include="Views\VW_EstadoCita_SeleccionarTodos.sql" />
+    <Build Include="Views\VW_DiagnosticoCita_SeleccionarTodos.sql" />
+    <Build Include="Views\VW_MedicamentoSCitas_SeleccionarTodos.sql" />
+    <Build Include="Functions\FN_Clinica_VerificaExistenciaPorId.sql" />
+    <Build Include="Functions\FN_Paciente_VerificaExistenciaPorId.sql" />
+    <Build Include="Functions\FN_Consultorio_VerificaExistenciaPorId.sql" />
+    <Build Include="Functions\FN_Doctor_VerificaExistenciaPorId.sql" />
+    <Build Include="Functions\FN_Enfermedad_VerificaExistenciaPorId.sql" />
+    <Build Include="Functions\FN_Medicamento_VerificaExistenciaPorId.sql" />
+    <Build Include="Functions\FN_Cita_VerificaExistenciaPorId.sql" />
+    <Build Include="Functions\FN_EstadoCita_VerificaExistenciaPorId.sql" />
+    <Build Include="Functions\FN_DiagnosticoCita_VerificaExistenciaPorId.sql" />
+    <Build Include="Functions\FN_MedicamentosCitas_VerificaExistenciaPorId.sql" />
+    <Build Include="Functions\FN_Clinica_SeleccionarPorId.sql" />
+    <Build Include="Functions\FN_Clinica_SeleccionarTodos.sql" />
+    <Build Include="Functions\FN_Paciente_SeleccionarPorId.sql" />
+    <Build Include="Functions\FN_Paciente_SeleccionarTodos.sql" />
+    <Build Include="Functions\FN_Colsultorio_SeleccionarPorId.sql" />
+    <Build Include="Functions\FN_Consultorio_SeleccionarTodos.sql" />
+    <Build Include="Functions\FN_Doctor_SeleccionarPorId.sql" />
+    <Build Include="Functions\FN_Doctor_SeleccionarTodos.sql" />
+    <Build Include="Functions\FN_Enfermedad_SeleccionarPorId.sql" />
+    <Build Include="Functions\FN_Enfermedad_SeleccionarTodos.sql" />
+    <Build Include="Functions\FN_Medicamento_SeleccionarPorId.sql" />
+    <Build Include="Functions\FN_Medicamento_SeleccionarTodos.sql" />
+    <Build Include="Functions\FN_Cita_SeleccionarPorId.sql" />
+    <Build Include="Functions\FN_Cita_SeleccionarTodos.sql" />
+    <Build Include="Functions\FN_EstadoCita_SeleccionarPorId.sql" />
+    <Build Include="Functions\FN_EstadoCita_SeleccionarTodos.sql" />
+    <Build Include="Functions\FN_DiagnosticoCita_SeleccionarPorId.sql" />
+    <Build Include="Functions\FN_DiagnosticoCita_SeleccionarTodos.sql" />
+    <Build Include="Functions\FN_MedicamentosCitas_SeleccionarPorId.sql" />
+    <Build Include="Functions\FN_MedicamentosCitas_SeleccionarTodos.sql" />
+    <Build Include="Stored Procedures\SP_ErroresBD_Insertar.sql" />
+    <Build Include="Stored Procedures\SP_Clinica_Desactivar.sql" />
+    <Build Include="Stored Procedures\SP_Clinica_Insertar.sql" />
+    <Build Include="Stored Procedures\SP_Paciente_Actualizar.sql" />
+    <Build Include="Stored Procedures\SP_Paciente_Desactivar.sql" />
+    <Build Include="Stored Procedures\SP_Paciente_Insertar.sql" />
+    <Build Include="Stored Procedures\SP_Consultorio_Actualizar.sql" />
+    <Build Include="Stored Procedures\SP_Consultorio_Desactivar.sql" />
+    <Build Include="Stored Procedures\SP_Consultorio_Insertar.sql" />
+    <Build Include="Stored Procedures\SP_Doctor_Actualizar.sql" />
+    <Build Include="Stored Procedures\SP_Doctor_Desactivar.sql" />
+    <Build Include="Stored Procedures\SP_Doctor_Insertar.sql" />
+    <Build Include="Stored Procedures\SP_Enfermedad_Actualizar.sql" />
+    <Build Include="Stored Procedures\SP_Enfermedad_Desactivar.sql" />
+    <Build Include="Stored Procedures\SP_Enfermedad_Insertar.sql" />
+    <Build Include="Stored Procedures\SP_Medicamento_Actualizar.sql" />
+    <Build Include="Stored Procedures\SP_Medicamentos_Desactivar.sql" />
+    <Build Include="Stored Procedures\SP_Medicamento_Insertar.sql" />
+    <Build Include="Stored Procedures\SP_Cita_Insertar.sql" />
+    <Build Include="Stored Procedures\SP_Cita_Actualizar.sql" />
+    <Build Include="Stored Procedures\SP_Cita_Desactivar.sql" />
+    <Build Include="Stored Procedures\SP_EstadoCita_Insertar.sql" />
+    <Build Include="Stored Procedures\SP_EstadoCita_Actualizar.sql" />
+    <Build Include="Stored Procedures\SP_EstadoCita_Desactivar.sql" />
+    <Build Include="Stored Procedures\SP_DiagnosticoCita_Insertar.sql" />
+    <Build Include="Stored Procedures\SP_DiagnosticoCita_Actualizar.sql" />
+    <Build Include="Stored Procedures\SP_DiagnosticoCita_Desactivar.sql" />
+    <Build Include="Stored Procedures\SP_MedicamentosCitas_Insertar.sql" />
+    <Build Include="Stored Procedures\SP_MedicamentosCitas_Actualizar.sql" />
+    <Build Include="Stored Procedures\SP_MedicamentosCitas_Desactivar.sql" />
+    <Build Include="Views\VW_Medicamento_SeleccionarTodos.sql" />
+    <Build Include="Stored Procedures\SP_Clinica_Actualizar.sql" />
+    <None Include="Scripts\ScriptsIgnoredOnImport.sql" />
   </ItemGroup>
 </Project>

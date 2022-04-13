@@ -1,5 +1,5 @@
 ﻿CREATE TABLE Enfermedades(
-    IdEnfermedad varchar,
+    IdEnfermedad NVARCHAR(50),
     Nombre varchar (20)not null,
     Activo BIT NOT NULL DEFAULT 1,
 	FechaCreacion DATETIME NOT NULL DEFAULT GETDATE(),
@@ -26,18 +26,7 @@ EXEC sp_addextendedproperty
    	@level1type = N'Table',		@level1name = 'Enfermedades', 
    	@level2type = N'Column',	@level2name = 'Activo'
 GO
-EXEC sp_addextendedproperty 
-	@name = N'MS_Description',	@value = 'Fecha de creación del registro',
-   	@level0type = N'Schema',	@level0name = 'dbo',
-   	@level1type = N'Table',		@level1name = 'Enfermedades', 
-   	@level2type = N'Column',	@level2name = 'FechaCreación'
-GO
-EXEC sp_addextendedproperty 
-	@name = N'MS_Description',	@value = 'Fecha de modificación del registro',
-   	@level0type = N'Schema',	@level0name = 'dbo',
-   	@level1type = N'Table',		@level1name = 'Enfermedades', 
-   	@level2type = N'Column',	@level2name = 'FechaModificación'
-GO
+
 EXEC sp_addextendedproperty 
 	@name = N'MS_Description',	@value = 'Nombre del usuario que crea el registro',
    	@level0type = N'Schema',	@level0name = 'dbo',

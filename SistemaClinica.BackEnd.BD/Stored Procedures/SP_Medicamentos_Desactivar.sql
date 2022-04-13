@@ -15,7 +15,7 @@
 					UPDATE Medicamentos
 					SET
 						Activo = 0,
-						FechaModificacion = GETDATE(),
+						FechaModificación = GETDATE(),
 						ModificadoPor = @ModificadoPor
 					WHERE 
 						@IdMedicamento = @IdMedicamento

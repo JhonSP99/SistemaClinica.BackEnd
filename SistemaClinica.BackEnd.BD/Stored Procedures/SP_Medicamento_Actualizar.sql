@@ -14,7 +14,7 @@
 				BEGIN
 					UPDATE Medicamentos
 					SET
-						FechaModificacion = GETDATE(),
+						FechaModificación = GETDATE(),
 						ModificadoPor = @ModificadoPor
 					WHERE 
 						@IdMedicamento = @IdMedicamento

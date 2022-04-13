@@ -6,4 +6,4 @@ RETURNS TABLE AS
 		SELECT * 
 		FROM VW_Medicamento_SeleccionarTodos AS Medicamentos
 		WHERE 
-			Medicamentos.Id_Medicamento = @IdMedicamento
+			Medicamentos.IdMedicamento = @IdMedicamento

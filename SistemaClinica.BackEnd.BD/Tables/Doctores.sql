@@ -1,5 +1,5 @@
 ﻿CREATE TABLE Doctores(
-    IdDoctor varchar,
+    IdDoctor NVARCHAR(50),
     Nombre varchar (20)not null,
     Apellidos varchar(30)not null,
     Activo BIT NOT NULL DEFAULT 1,
@@ -33,18 +33,7 @@ EXEC sp_addextendedproperty
    	@level1type = N'Table',		@level1name = 'Doctores', 
    	@level2type = N'Column',	@level2name = 'Activo'
 GO
-EXEC sp_addextendedproperty 
-	@name = N'MS_Description',	@value = 'Fecha de creación del registro',
-   	@level0type = N'Schema',	@level0name = 'dbo',
-   	@level1type = N'Table',		@level1name = 'Doctores', 
-   	@level2type = N'Column',	@level2name = 'FechaCreación'
-GO
-EXEC sp_addextendedproperty 
-	@name = N'MS_Description',	@value = 'Fecha de modificación del registro',
-   	@level0type = N'Schema',	@level0name = 'dbo',
-   	@level1type = N'Table',		@level1name = 'Doctores', 
-   	@level2type = N'Column',	@level2name = 'FechaModificación'
-GO
+
 EXEC sp_addextendedproperty 
 	@name = N'MS_Description',	@value = 'Nombre del usuario que crea el registro',
    	@level0type = N'Schema',	@level0name = 'dbo',
