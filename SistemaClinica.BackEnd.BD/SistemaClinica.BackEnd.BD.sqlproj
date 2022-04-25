@@ -147,4 +147,7 @@
     <Build Include="Stored Procedures\SP_Clinica_Actualizar.sql" />
     <None Include="Scripts\ScriptsIgnoredOnImport.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="SistemaClinica.BackEnd.BD.publish.xml" />
+  </ItemGroup>
 </Project>
