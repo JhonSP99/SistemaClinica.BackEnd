@@ -146,8 +146,10 @@
     <Build Include="Views\VW_Medicamento_SeleccionarTodos.sql" />
     <Build Include="Stored Procedures\SP_Clinica_Actualizar.sql" />
     <None Include="Scripts\ScriptsIgnoredOnImport.sql" />
+    <Build Include="Stored Procedures\SP_SysObtenerClaseDesdeTabla.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SistemaClinica.BackEnd.BD.publish.xml" />
+    <None Include="Scripts\Consultas.sql" />
   </ItemGroup>
 </Project>
